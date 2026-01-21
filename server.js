@@ -47,8 +47,8 @@ app.get('/books', (req, res) => {
 });
 
 app.get('/books/:id', (req, res) => {
-    const booksID = parseInt(req.params.id);
-    const book = books.find(b => b.id === booksID)
+    const bookID = parseInt(req.params.id);
+    const book = books.find(b => b.id === bookID)
 
     if (book) {
         res.json(book);
@@ -58,10 +58,54 @@ app.get('/books/:id', (req, res) => {
         
 });
 
+app.post('/books', (req, res) => {
+    const { title, author, genre, copiesAvailable } = req.body;
+    const newBook = {
+        id: books.length + 1,
+        title,
+        author,
+        genre,
+        copiesAvailable,
+    }
 
+    books.push(newBook);
+    res.status(201).json(newBook);
+});
 
+app.put('/books/:id', (req, res) => {
+    const bookID = parseInt(req.params.id);
+    const { title, author, genre, copiesAvailable } = req.body;
 
+    const bookIndex = books.findIndex(b => b.id === bookID);
 
+    if (bookIndex === -1) {
+        return res.status(404).json({ error: 'Book not found' });
+    } 
+    books[bookIndex] = {
+        id: bookID,
+        title,
+        author,
+        genre,
+        copiesAvailable
+    };
+
+    res.json(books[bookIndex]);
+});
+
+app.delete('/books/:id', (req, res) => {
+    const bookID = parseInt(req.params.id);
+
+    const bookIndex = books.findIndex(b => b.id === bookID);
+
+    if (bookIndex === -1) {
+        return res.status(404).json({ error: 'Book not found' });
+    }
+
+    const deletedBook = books.splice(bookIndex, 1)[0];
+
+    res.json({ message: 'Book deleted successfully', book: deletedBook});
+    
+});
 
 
 
