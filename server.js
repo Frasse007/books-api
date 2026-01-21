@@ -32,6 +32,31 @@ let books = [
     'DELETE /api/books/:id': 'Delete a book'
 */
 
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+app.listen(port, () => {
+    console.log(`Books API server running at http://localhost:${port}`)
+});
+
+app.get('/books', (req, res) => {
+    res.json(books)
+});
+
+app.get('/books/:id', (req, res) => {
+    const booksID = parseInt(req.params.id);
+    const book = books.find(b => b.id === booksID)
+
+    if (book) {
+        res.json(book);
+    } else {
+        res.status(404).json({ error: 'Book not found' });
+    }
+        
+});
 
 
 
