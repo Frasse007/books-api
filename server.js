@@ -38,16 +38,19 @@ const port = 3000;
 
 app.use(express.json());
 
+// Only start server when running directly (not during tests)
 if (require.main === module) {
     app.listen(port, () => {
     console.log(`Books API server running at http://localhost:${port}`)
     });
 }
 
+// GET /api/books - Retrievs all books
 app.get('/api/books', (req, res) => {
     res.json(books)
 });
 
+// GET /api/books/:id - Retrievs a specific book by ID
 app.get('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
     const book = books.find(b => b.id === bookID)
@@ -60,14 +63,16 @@ app.get('/api/books/:id', (req, res) => {
         
 });
 
+// POST /api/books - Creates a new book
 app.post('/api/books', (req, res) => {
     const { title, author, genre, copiesAvailable } = req.body;
 
+    // Validates that input contains all required fields
     if (!title || !author || !genre || copiesAvailable === undefined) {
         return res.status(400).json({ error: 'Missing required fields: title, author, genre, copiesAvailable' });
     }
 
-
+    // Validates that copiesAvailable is a number and not negative
     if (typeof copiesAvailable !== 'number' || copiesAvailable < 0) {
         return res.status(400).json({ error: 'copiesAvailable must be a non-negative number'});
     }
@@ -86,15 +91,17 @@ app.post('/api/books', (req, res) => {
     res.status(201).json(newBook);
 });
 
+// PUT /api/books/:id - Updates an existing book by ID
 app.put('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
     const { title, author, genre, copiesAvailable } = req.body;
 
+    // Validates that input contains all required fields
     if (!title || !author || !genre || copiesAvailable === undefined) {
         return res.status(400).json({ error: 'Missing required fields: title, author, genre, copiesAvailable' });
     }
 
-
+    // Validates that copiesAvailable is a number and not negative
     if (typeof copiesAvailable !== 'number' || copiesAvailable < 0) {
         return res.status(400).json({ error: 'copiesAvailable must be a non-negative number'});
     }
@@ -115,6 +122,7 @@ app.put('/api/books/:id', (req, res) => {
     res.json(books[bookIndex]);
 });
 
+// DELETE /api/books/:id - Deletes a book by ID
 app.delete('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
 
@@ -130,4 +138,5 @@ app.delete('/api/books/:id', (req, res) => {
     
 });
 
+// Exports app for testing
 module.exports = app;
