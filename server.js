@@ -140,3 +140,4 @@ app.delete('/api/books/:id', (req, res) => {
 
 // Exports app for testing
 module.exports = app;
+module.exports.books = books;

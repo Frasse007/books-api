@@ -3,7 +3,8 @@ const app = require('../server');
 
 describe('Books API testing', () => {
     beforeEach(() => {
-        const originalBooks = [
+        app.books.length = 0;
+        app.books.push(
              {
                 id: 1,
                 title: "The Great Gatsby",
@@ -25,7 +26,7 @@ describe('Books API testing', () => {
                 genre: "Dystopian Fiction",
                 copiesAvailable: 7
             }
-        ];
+        );
     });
     
     test('Should return all books', async () => {
