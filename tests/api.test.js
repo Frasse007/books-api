@@ -59,4 +59,54 @@ describe('Books API testing', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('message');
     });
+
+    test('Should return 400 for POST with missing fields', async () => {
+        const incompleteBook = {
+            title: "Incomplete Book"
+        };
+
+        const response = await request(app).post('/api/books').send(incompleteBook);
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    });
+
+    test('Should return 400 for POST with invalid copiesAvailable', async () => {
+        const invalidBook = {
+            title: "The Alchemist",
+            author: "Paulo Coelho",
+            genre: "Fantasy/Adventure",
+            copiesAvailable: -5
+        };
+
+        const response = await request(app).post('/api/books').send(invalidBook);
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    });
+
+    test('Should return 404 for PUT with non-existent ID', async () => {
+        const updatedBook = {
+            title: "The Alchemist",
+            author: "Paulo Coelho",
+            genre: "Fantasy/Adventure",
+            copiesAvailable: 5
+        };
+
+        const response = await request(app).put('/api/books/9999').setEncoding(updatedBook);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty('error');
+    });
+
+    test('Should return 400 for PUT with missing fields', async () => {
+        const incompleteUpdate = {
+            title: "Incomplete Book"
+        };
+
+        const response = await request(app).put('/api/books/1').send(incompleteUpdate);
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    });
 });
