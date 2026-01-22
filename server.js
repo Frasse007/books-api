@@ -44,11 +44,11 @@ if (require.main === module) {
     });
 }
 
-app.get('/books', (req, res) => {
+app.get('/api/books', (req, res) => {
     res.json(books)
 });
 
-app.get('/books/:id', (req, res) => {
+app.get('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
     const book = books.find(b => b.id === bookID)
 
@@ -60,7 +60,7 @@ app.get('/books/:id', (req, res) => {
         
 });
 
-app.post('/books', (req, res) => {
+app.post('/api/books', (req, res) => {
     const { title, author, genre, copiesAvailable } = req.body;
     const newBook = {
         id: books.length + 1,
@@ -74,7 +74,7 @@ app.post('/books', (req, res) => {
     res.status(201).json(newBook);
 });
 
-app.put('/books/:id', (req, res) => {
+app.put('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
     const { title, author, genre, copiesAvailable } = req.body;
 
@@ -94,7 +94,7 @@ app.put('/books/:id', (req, res) => {
     res.json(books[bookIndex]);
 });
 
-app.delete('/books/:id', (req, res) => {
+app.delete('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
 
     const bookIndex = books.findIndex(b => b.id === bookID);

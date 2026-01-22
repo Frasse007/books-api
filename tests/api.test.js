@@ -3,14 +3,14 @@ const app = require('../server');
 
 describe('Books API testing', () => {
     test('Should return all books', async () => {
-        const response = await request(app).get('/books');
+        const response = await request(app).get('/api/books');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(3);
     });
 
     test('Should return book by id', async () => {
-        const response = await request(app).get('/books/1');
+        const response = await request(app).get('/api/books/1');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('id', 1);
@@ -18,7 +18,7 @@ describe('Books API testing', () => {
     });
 
     test('Should return error by book id', async () => {
-        const response = await request(app).get('/books/999');
+        const response = await request(app).get('/api/books/999');
 
         expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('error');
@@ -32,7 +32,7 @@ describe('Books API testing', () => {
             copiesAvailable: 9
         };
 
-        const response = await request(app).post('/books').send(newBook);
+        const response = await request(app).post('/api/books').send(newBook);
 
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty('id');
@@ -47,14 +47,14 @@ describe('Books API testing', () => {
             copiesAvailable: 9
         };
         
-        const response = await request(app).put('/books/1').send(updatedBook);
+        const response = await request(app).put('/api/books/1').send(updatedBook);
 
         expect(response.status).toBe(200);
         expect(response.body.genre).toBe('Fantasy/Adventure');
     });
 
     test('Should delete existing book', async () => {
-        const response = await request(app).delete('/books/1');
+        const response = await request(app).delete('/api/books/1');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('message');
