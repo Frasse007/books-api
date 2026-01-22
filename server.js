@@ -62,8 +62,11 @@ app.get('/api/books/:id', (req, res) => {
 
 app.post('/api/books', (req, res) => {
     const { title, author, genre, copiesAvailable } = req.body;
+
+    const newId = books.length > 0 ? Math.max(...books.map(b => b.id)) + 1: 1;
+
     const newBook = {
-        id: books.length + 1,
+        id: newId,
         title,
         author,
         genre,
