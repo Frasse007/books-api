@@ -38,9 +38,11 @@ const port = 3000;
 
 app.use(express.json());
 
-app.listen(port, () => {
+if (require.main === module) {
+    app.listen(port, () => {
     console.log(`Books API server running at http://localhost:${port}`)
-});
+    });
+}
 
 app.get('/books', (req, res) => {
     res.json(books)
@@ -107,7 +109,4 @@ app.delete('/books/:id', (req, res) => {
     
 });
 
-
-
-
-
+module.exports = app;
