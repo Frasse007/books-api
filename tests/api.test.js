@@ -119,7 +119,7 @@ describe('Books API testing', () => {
             copiesAvailable: 5
         };
 
-        const response = await request(app).put('/api/books/9999').setEncoding(updatedBook);
+        const response = await request(app).put('/api/books/9999').send(updatedBook);
 
         expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('error');

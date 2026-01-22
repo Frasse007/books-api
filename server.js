@@ -41,7 +41,7 @@ app.use(express.json());
 // Only start server when running directly (not during tests)
 if (require.main === module) {
     app.listen(port, () => {
-    console.log(`Books API server running at http://localhost:${port}`)
+        console.log(`Books API server running at http://localhost:${port}`)
     });
 }
 
