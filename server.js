@@ -63,6 +63,15 @@ app.get('/api/books/:id', (req, res) => {
 app.post('/api/books', (req, res) => {
     const { title, author, genre, copiesAvailable } = req.body;
 
+    if (!title || !author || !genre || copiesAvailable === undefined) {
+        return res.status(400).json({ error: 'Missing required fields: title, author, genre, copiesAvailable' });
+    }
+
+
+    if (typeof copiesAvailable !== 'number' || copiesAvailable < 0) {
+        return res.status(400).json({ error: 'copiesAvailable must be a non-negative number'});
+    }
+
     const newId = books.length > 0 ? Math.max(...books.map(b => b.id)) + 1: 1;
 
     const newBook = {
@@ -80,6 +89,15 @@ app.post('/api/books', (req, res) => {
 app.put('/api/books/:id', (req, res) => {
     const bookID = parseInt(req.params.id);
     const { title, author, genre, copiesAvailable } = req.body;
+
+    if (!title || !author || !genre || copiesAvailable === undefined) {
+        return res.status(400).json({ error: 'Missing required fields: title, author, genre, copiesAvailable' });
+    }
+
+
+    if (typeof copiesAvailable !== 'number' || copiesAvailable < 0) {
+        return res.status(400).json({ error: 'copiesAvailable must be a non-negative number'});
+    }
 
     const bookIndex = books.findIndex(b => b.id === bookID);
 
